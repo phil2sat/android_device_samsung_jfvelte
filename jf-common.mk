@@ -77,7 +77,8 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     audio.usb.default \
     libaudio-resampler
-
+    
+    
 # ANT+
 PRODUCT_PACKAGES += \
         com.dsi.ant.antradio_library \
@@ -86,8 +87,8 @@ PRODUCT_PACKAGES += \
         ANTRadioService \
         ANTPlusPluginsService \
         antradio_app \
-        
-        PRODUCT_COPY_FILES += \
+
+PRODUCT_COPY_FILES += \
         external/ant-wireless/antradio-library/com.dsi.ant.antradio_library.xml:system/etc/permissions/com.dsi.ant.antradio_library.xml \
 
 # Audio configuration
@@ -218,22 +219,30 @@ PRODUCT_PACKAGES += \
     hostapd \
     wpa_supplicant \
     wpa_supplicant.conf
-
+	
 # Prima opensource driver files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/prima/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
-    $(LOCAL_PATH)/wifi/prima/WCNSS_qcom_cfg.ini:system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini \
+    $(LOCAL_PATH)/wifi/prima/WCNSS_qcom_cfg.ini:system/etc/wifi/WCNSS_qcom_cfg.ini \
     $(LOCAL_PATH)/wifi/prima/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
 
 # add support for our wifi
 PRODUCT_PACKAGES += \
-	wcnss_service
+	wcnss_service \
+	libwcnss_qmi
 	
 # Config files for hostapd
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
     $(LOCAL_PATH)/configs/hostapd.accept:system/etc/hostapd/hostapd.accept \
     $(LOCAL_PATH)/configs/hostapd.deny:system/etc/hostapd/hostapd.deny
+
+# Bluetooth script and proprietary files (for now here in order not to bloat TheMuppets)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/bluetooth/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
+	$(LOCAL_PATH)/bluetooth/btnvtool:system/bin/btnvtool \
+	$(LOCAL_PATH)/bluetooth/hci_qcomm_init:system/bin/hci_qcomm_init \
+	$(LOCAL_PATH)/bluetooth/libbtnv.so:system/lib/libbtnv.so	
 	
 # SoftAP
 PRODUCT_PACKAGES += \
@@ -246,9 +255,9 @@ PRODUCT_COPY_FILES += \
 
 # audio
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.audio.dualmic.config=endfire \
+    persist.audio.fluence.mode=endfire \
     persist.audio.vr.enable=false \
-    persist.audio.fluence.voicecall=true \
+    persist.audio.handset.mic=digital \
     persist.audio.speaker.location=high \
     ro.qc.sdk.audio.fluencetype=fluence
 
@@ -260,7 +269,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hwui.text_cache_width=2048 \
     ro.opengles.version=196608 \
-    ro.sf.lcd_density=400
+    ro.sf.lcd_density=480
 
 # media
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -270,6 +279,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.data.ds_fmc_app.mode=0 \
     persist.data_netmgrd_nint=16 \
+    persist.data.qmi.adb_logmask=0 \
     persist.omh.enabled=1 \
     persist.radio.add_power_save=1 \
     persist.radio.fill_eons=1 \
